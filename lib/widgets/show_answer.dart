@@ -1,29 +1,42 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animated_text_lerp/animated_text_lerp.dart';
 import 'package:flutter/material.dart';
-import 'package:surf_practice_magic_ball/screen/magic_ball_screen.dart';
 
-class ShowAnswer extends StatefulWidget {
+class AnswerClass extends StatefulWidget {
   final String responseTextShow;
+  const AnswerClass({
+    super.key,
+    required AnimationController controller,
+    required this.responseTextShow,
+  }) : _controller = controller;
 
-  const ShowAnswer({super.key, required this.responseTextShow});
+  final AnimationController _controller;
 
   @override
-  State<ShowAnswer> createState() => _ShowAnswerState();
+  State<AnswerClass> createState() => _AnswerClassState();
 }
 
-class _ShowAnswerState extends State<ShowAnswer> {
+class _AnswerClassState extends State<AnswerClass> {
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Image.asset('assets/images/ball-dark.png'),
-        // Image.asset(
-        //   'assets/images/Vector.png',
-        //   height: 200,
-        //   width: 200,
-        // ),
+        Image.asset('assets/images/ball.png'),
+        RotationTransition(
+          turns: Tween(begin: 0.0, end: 1.0).animate(widget._controller),
+          child: Image.asset(
+            'assets/images/smallstar.png',
+          ),
+        ),
+        RotationTransition(
+          turns: Tween(begin: 1.0, end: 0.0).animate(widget._controller),
+          child: Image.asset(
+            'assets/images/star.png',
+            width: 200,
+            height: 200,
+          ),
+        ),
+        Image.asset('assets/images/black.png'),
         SizedBox(
           width: 243,
           child: Padding(
@@ -38,20 +51,8 @@ class _ShowAnswerState extends State<ShowAnswer> {
                     fontSize: 32,
                     fontFamily: 'Sans',
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff9923A2)),
-              )
-              // Text(
-              //   responseTextShow, // Display the translated response from the API
-              //   textAlign: TextAlign.center,
-              // style: const TextStyle(
-              //   decoration: TextDecoration.none,
-              //   fontSize: 32,
-              //   fontFamily: 'Sans',
-              //   fontWeight: FontWeight.w400,
-              //   color: Color(0xFFFFFFFF),
-              // ),
-              // ),
-              ),
+                    color: Color.fromARGB(255, 252, 250, 252)),
+              )),
         ),
       ],
     );
