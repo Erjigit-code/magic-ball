@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class footer extends StatelessWidget {
-  const footer({
+  final FlutterTts flutterTts = FlutterTts();
+
+  footer({
     super.key,
   });
+  speak(String soundMsg) async {
+    await flutterTts.setLanguage('ru-RU');
+    await flutterTts.setPitch(1);
+    await flutterTts.speak(soundMsg);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // _fetchAndPrintAllAnswers();
-        // Получил Все возможные ответы с API в console, чтобы отредактировать и перевести на русский язык
-      },
+      onTap: () {},
       child: Container(
         margin: const EdgeInsets.only(top: 60),
         width: 175,

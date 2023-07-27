@@ -9,8 +9,6 @@ class EightBallApi {
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      final reading = jsonData['reading'];
-      print('Response: $reading');
     } else {
       print('Failed to fetch data: ${response.statusCode}');
     }

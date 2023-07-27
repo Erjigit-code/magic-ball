@@ -15,29 +15,22 @@ class MagicBallScreen extends StatefulWidget {
 }
 
 class _MagicBallScreenState extends State<MagicBallScreen> {
-  List<String> formattedResponses = [];
   List<String> serverResponses = MagicBallResponses.serverResponses;
   Map<String, String> replacements = getReplacements();
+
+  String responseText = '';
+  bool tapped = false;
+  bool isFetchingData = false;
+  EightBallApi eightBallApi = EightBallApi();
+  footer footerb = footer();
 
   @override
   void initState() {
     super.initState();
-    formatResponses();
 
     ShakeDetector detector = ShakeDetector.autoStart(
       onPhoneShake: () async {
-        if (!isFetchingData) {
-          setState(() {
-            tapped = true;
-            isFetchingData = true;
-          });
-          final result = await eightBallApi.fetchData();
-          final translatedResponse = replaceMultiple(result, replacements);
-          setState(() {
-            responseText = translatedResponse;
-            isFetchingData = false;
-          });
-        }
+        onTap();
       },
       minimumShakeCount: 1,
       shakeSlopTimeMS: 500,
@@ -45,30 +38,6 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
       shakeThresholdGravity: 2.7,
     );
     detector.startListening();
-  }
-
-  void formatResponses() {
-    for (String response in serverResponses) {
-      String editedResponse = replaceMultiple(response, replacements);
-      formattedResponses.add(editedResponse);
-    }
-  }
-
-  String responseText = '';
-  bool tapped = false;
-  bool isFetchingData = false;
-  EightBallApi eightBallApi = EightBallApi();
-
-  String getRandomResponse() {
-    // Возвращаем пустую строку, если данные еще не загружены
-    if (isFetchingData) {
-      return "";
-    }
-
-    final random = Random();
-    final randomIndex = random.nextInt(serverResponses.length);
-    final randomResponse = serverResponses[randomIndex];
-    return replacements[randomResponse] ?? '';
   }
 
   @override
@@ -90,7 +59,7 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
           GestureDetector(
             onTap: onTap,
             child: tapped
-                ? ShowAnswer(responseText: getRandomResponse())
+                ? ShowAnswer(responseTextShow: showText)
                 : Stack(
                     alignment: Alignment.center,
                     children: [
@@ -107,31 +76,40 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
               Image.asset('assets/images/Ellipse2.png'),
             ],
           ),
-          const footer(),
+          footer(),
         ],
       ),
     );
   }
 
-  String replaceMultiple(String text, Map<String, String> replacements) {
-    for (var entry in replacements.entries) {
-      text = text.replaceAll(entry.key, entry.value);
-    }
-    return text;
-  }
-
-  void onTap() async {
+  void onTap() {
     if (!isFetchingData) {
       setState(() {
         tapped = true;
         isFetchingData = true;
       });
-      final result = await eightBallApi.fetchData();
-      final translatedResponse = replaceMultiple(result, replacements);
+
       setState(() {
-        responseText = translatedResponse;
+        responseText = getRandomResponse();
         isFetchingData = false;
+        showText = getRandomResponse();
       });
+      footerb.speak(showText);
     }
+  }
+
+  String showText = '';
+
+  String getRandomResponse() {
+    // Возвращаем пустую строку, если данные еще не загружены
+    if (isFetchingData) {
+      return "";
+    }
+
+    final random = Random();
+    final randomIndex = random.nextInt(serverResponses.length);
+    final randomResponse = serverResponses[randomIndex];
+
+    return replacements[randomResponse] ?? '';
   }
 }

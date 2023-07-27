@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ShowAnswer extends StatelessWidget {
-  final String responseText;
+  final String responseTextShow;
 
-  const ShowAnswer({super.key, required this.responseText});
+  const ShowAnswer({super.key, required this.responseTextShow});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ShowAnswer extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 15.0),
             child: Text(
-              responseText, // Display the translated response from the API
+              responseTextShow, // Display the translated response from the API
               textAlign: TextAlign.center,
               style: const TextStyle(
                 decoration: TextDecoration.none,
