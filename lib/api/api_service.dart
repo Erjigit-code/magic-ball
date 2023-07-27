@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 
 class EightBallApi {
@@ -8,7 +6,6 @@ class EightBallApi {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
     } else {
       print('Failed to fetch data: ${response.statusCode}');
     }
