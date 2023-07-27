@@ -10,6 +10,9 @@ environment:
   flutter: ^3.10.3 # Flutter SDK version
 
 dependencies:
+  
+  animated_text_kit: ^4.2.2
+  animated_text_lerp: ^1.0.5
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
